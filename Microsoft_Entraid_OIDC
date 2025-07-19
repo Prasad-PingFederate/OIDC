@@ -1,5 +1,15 @@
 name:Microsoft_Entraid_OIDC
 
+- name: Check if secrets are present
+  shell: bash
+  run: |
+    if [ -z "${{ secrets.AZURE_TENANT_ID }}" ] || [ -z "${{ secrets.AZURE_CLIENT_ID }}" ]; then
+      echo "One or both secrets missing!"; exit 1
+    else
+      echo "All required secrets are present."
+    fi
+
+
 on:
   workflow_dispatch:
 
