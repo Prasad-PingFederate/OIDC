@@ -12,6 +12,16 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
+      - name: Check if required secrets are present
+        shell: bash
+        run: |
+          if [ -z "${{ secrets.AZURE_TENANT_ID }}" ] || [ -z "${{ secrets.AZURE_CLIENT_ID }}" ]; then
+            echo "🚫 Error: One or both secrets missing!"
+            exit 1
+          else
+            echo "✅ All required secrets are present."
+          fi
+
       - name: Install Microsoft Graph PowerShell 
         shell: pwsh
         run: |
@@ -43,7 +53,7 @@ jobs:
             
             Write-Host "Requesting access token from: $tokenEndpoint"
             $tokenResponse = Invoke-RestMethod -Method Post -Uri $tokenEndpoint -Body $tokenParams -ContentType "application/x-www-form-urlencoded"
-            Write-Host "Successfully obtained access token"
+            Write-Host "✅ Successfully obtained access token"
             
             # Convert access token to SecureString
             $secureAccessToken = ConvertTo-SecureString $tokenResponse.access_token -AsPlainText -Force
