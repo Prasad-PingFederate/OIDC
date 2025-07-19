@@ -1,4 +1,4 @@
-name: Connect to Entra using OIDC
+name:Microsoft_Entraid_OIDC
 
 on:
   workflow_dispatch:
